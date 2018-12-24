@@ -9,8 +9,42 @@ class Monster:
         self.health = health
         self.mana = mana
         self.level = level
-        self.exp = 0
-        self.move_list = []
+        self._exp = 0
+        self._move_list = []
+        self._level_up_base = 25
+
+    def change_health(self, amount: int):
+        self.health += amount
+        if self.health < 0:
+            self.health = 0
+            return self.health
+        else:
+            return self.health
+
+    def change_mana(self, amount: int):
+        self.mana += amount
+        if self.mana < 0:
+            self.mana = 0
+            return self.mana
+        else:
+            return self.mana
+
+    def _level_up(self):
+        if self._exp > (self.level * self._level_up_base):
+            self.level += 1
+            self._level_up()
+
+    def add_exp(self, amount: int):
+        self._exp += amount
+        self._level_up()
+
+    def add_move(self, move: object) -> bool:
+        if len(self._move_list) < 4:
+            self._move_list.append(move)
+            return True
+        else:
+            print("Monster already knows 4 moves!")
+            return False
 
 
 class Move:
