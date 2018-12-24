@@ -62,8 +62,13 @@ class Move:
 
 
 def load_monsters_from_config():
-    monsters_config = json.loads("monsters.json")
-    print(monsters_config)
+    monster_list = []
+    with open("monsters.json", "r") as config:
+        monsters_config = json.load(config)
+    for monster in monsters_config["monster"]:
+        monster_list.append(
+            Monster(monster["name"],
+                    monster["health"],
+                    monster["mana"],
+                    monster["level"]))
 
-
-load_monsters_from_config()
