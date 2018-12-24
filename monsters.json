@@ -1,0 +1,13 @@
+{
+  "monster": [{
+    "name": "Pikachu",
+    "health": 100,
+    "mana": 50,
+    "level": 1
+  }, {
+    "name": "Rattata",
+    "health": 50,
+    "mana": 25,
+    "level": 1
+  }]
+}

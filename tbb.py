@@ -2,10 +2,12 @@
 # Written by: George Dunbar (Ridonk)
 
 import random
+import json
 
 
 class Monster:
-    def __init__(self, health: int, mana: int, level: int):
+    def __init__(self, name: str, health: int, mana: int, level: int):
+        self.name = name
         self.health = health
         self.mana = mana
         self.level = level
@@ -32,6 +34,8 @@ class Monster:
     def _level_up(self):
         if self._exp > (self.level * self._level_up_base):
             self.level += 1
+            self.change_health(int(self.health * 1.25))
+            self.change_mana(int(self.mana * 1.25))
             self._level_up()
 
     def add_exp(self, amount: int):
@@ -57,4 +61,9 @@ class Move:
         return random.randint(self.lower, self.upper)
 
 
+def load_monsters_from_config():
+    monsters_config = json.loads("monsters.json")
+    print(monsters_config)
 
+
+load_monsters_from_config()
