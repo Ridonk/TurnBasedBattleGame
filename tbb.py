@@ -6,11 +6,12 @@ import json
 
 
 class Monster:
-    def __init__(self, name: str, health: int, mana: int, level: int):
+    def __init__(self, name: str, health: int, mana: int, level: int, speed: int):
         self.name = name
         self.health = health
         self.mana = mana
         self.level = level
+        self.speed = speed
         self._exp = 0
         self._move_list = []
         self._level_up_base = 25
@@ -67,8 +68,10 @@ def load_monsters_from_config():
         monsters_config = json.load(config)
     for monster in monsters_config["monster"]:
         monster_list.append(
-            Monster(monster["name"],
-                    monster["health"],
-                    monster["mana"],
-                    monster["level"]))
+            Monster(
+                monster["name"],
+                monster["health"],
+                monster["mana"],
+                monster["level"],
+                monster["speed"]))
 
