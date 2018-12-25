@@ -11,5 +11,24 @@
     "mana": 25,
     "level": 1,
     "speed": 5
+  }],
+  "move": [{
+    "name": "Small Attack",
+    "lower": 10,
+    "upper": 20,
+    "target": true,
+    "cost": 0
+  }, {
+    "name": "Big Attack",
+    "lower": 20,
+    "upper": 50,
+    "target": true,
+    "cost": 0
+  }, {
+    "name": "Heal",
+    "lower": 15,
+    "upper": 30,
+    "target": false,
+    "cost": 25
   }]
 }
