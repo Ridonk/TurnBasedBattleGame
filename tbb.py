@@ -11,39 +11,44 @@ class Monster:
         self.health = health
         self.current_health = health
         self.mana = mana
+        self.current_mana = mana
         self.level = level
         self.speed = speed
+        self.current_speed = speed
         self.is_player = is_player
         self._exp = 0
         self.move_list = []
         self._level_up_base = 25
 
     def change_health(self, amount: int):
-        self.current_health -= amount
+        self.current_health += amount
         if self.current_health < 0:
             self.current_health = 0
             return self.current_health
         elif self.current_health > self.health:
             self.current_health = self.health
-            return self.health
+            return self.current_health
         else:
             return self.current_health
 
     def change_mana(self, amount: int):
-        self.mana += amount
-        if self.mana < 0:
+        self.current_mana += amount
+        if self.current_mana < 0:
             self.mana = 0
-            return self.mana
+            return self.current_mana
+        elif self.current_mana > self.mana:
+            self.current_mana = self.mana
+            return self.current_mana
         else:
-            return self.mana
+            return self.current_mana
 
     def change_speed(self, amount: int):
-        self.speed += amount
-        if self.speed < 0:
-            self.speed = 0
-            return self.speed
+        self.current_speed += amount
+        if self.current_speed < 0:
+            self.current_speed = 0
+            return self.current_speed
         else:
-            return self.speed
+            return self.current_speed
 
     def _level_up(self):
         if self._exp > (self.level * self._level_up_base):
@@ -118,7 +123,7 @@ def load_monsters_from_config() -> list:
 
 def battle(player: Monster, npc: Monster):
     player.is_player = True
-    print("{} has {} health remaining. {} has {} health remaining".format(
+    print("Enemy {} has {} health remaining. Your {} has {} health remaining".format(
         npc.name,
         npc.current_health,
         player.name,
@@ -162,18 +167,40 @@ def battle(player: Monster, npc: Monster):
 def battle_round(attacker: Monster, attacker_move: Move, defender: Monster, defender_move: Move):
     if attacker_move.target_other:
         attacker_damage = random.randint(attacker_move.lower, attacker_move.upper)
-        defender.change_health(attacker_damage)
+        defender.change_health(attacker_damage*-1)
+        print("{} has done {} damage! {} has {} health remaining!".format(
+            attacker.name,
+            attacker_damage,
+            defender.name,
+            defender.current_health))
     else:
         attacker_damage = random.randint(attacker_move.lower, attacker_move.upper)
-        attacker.change_health(attacker_damage * -1)
+        attacker.change_health(attacker_damage)
+        attacker.change_mana(attacker_move.cost*-1)
+        print("{} has healed for {}! {} remaining mana.".format(
+            attacker.name,
+            attacker_damage,
+            attacker.current_mana
+        ))
 
     if defender.current_health > 0:
         if defender_move.target_other:
             attacker_damage = random.randint(attacker_move.lower, attacker_move.upper)
-            attacker.change_health(attacker_damage)
+            attacker.change_health(attacker_damage*-1)
+            print("{} has done {} damage! {} has {} health remaining!".format(
+                defender.name,
+                attacker_damage,
+                attacker.name,
+                attacker.current_health))
         else:
             attacker_damage = random.randint(attacker_move.lower, attacker_move.upper)
-            defender.change_health(attacker_damage * -1)
+            defender.change_health(attacker_damage)
+            defender.change_mana(defender_move.cost*-1)
+            print("{} has healed for {}! {} remaining mana.".format(
+                defender.name,
+                attacker_damage,
+                defender.current_mana
+            ))
     elif defender.current_health <= 0 and attacker.is_player:
         print("{} has lost! Congratulations!".format(defender.name))
         quit()
